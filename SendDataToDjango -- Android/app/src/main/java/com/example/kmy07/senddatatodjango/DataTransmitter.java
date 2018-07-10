@@ -20,6 +20,7 @@ public class DataTransmitter {
     private String data_to_send;
     Context context;
     private String serverAddress;
+    private boolean status = true;
 
     public DataTransmitter(ArrayList<String> userDetails,Context context){
         this.user = userDetails;
@@ -39,7 +40,7 @@ public class DataTransmitter {
         data_to_send = result.toString().replace("\\s","");
     }
 
-    public void sendData() throws JSONException {
+    public boolean sendData() throws JSONException {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -50,19 +51,20 @@ public class DataTransmitter {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("Info","Sucess!");
+
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(RegistrationScreen.this, "Not yet!\n" +error.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("Error",error.getMessage());
+                status = false;
             }
         });
 
 
         queue.add(stringRequest);
+        return status;
     }
 
 }

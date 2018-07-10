@@ -25,7 +25,7 @@ public class RegistrationScreen extends AppCompatActivity {
     private EditText name,number,age;
     private Button registerButton;
     private ArrayList<String> userDetails = new ArrayList<String>();
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +57,21 @@ public class RegistrationScreen extends AppCompatActivity {
                     userDetails.add(userAge);
                     Toast.makeText(RegistrationScreen.this, "Registeration on progress...", Toast.LENGTH_SHORT).show();
                     DataTransmitter sender = new DataTransmitter(userDetails,getApplicationContext());
-                    sender.newServer("http://your_ip_here/user_details/");
+                    sender.newServer("http://yourIpHere/register_user/");
                     try {
-                        sender.sendData();
+                        boolean isSuccess = sender.sendData();
+                        if(isSuccess){
+                            Toast.makeText(RegistrationScreen.this, "Details Registered Successfully!", Toast.LENGTH_SHORT).show();
+                            age.setText("");
+                            name.setText("");
+                            number.setText("");
+                            age.clearFocus();
+                            name.requestFocus();
+                            name.setCursorVisible(true);
+                        }
+                        else{
+                            Toast.makeText(RegistrationScreen.this, "Details Registered UnSuccessfull!", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (JSONException e) {
 
                     }
